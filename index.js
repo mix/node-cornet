@@ -6,9 +6,9 @@ function Handler(options){
 	if(!(this instanceof Handler)) return new Handler(options);
 	var that = this;
 	DomHandler.call(this, function(e, dom){
-		that.emit("dom", dom);
+		if (dom) that.emit("dom", dom);
 	}, options, function(elem){
-		that.emit("element", elem);
+		if (elem) that.emit("element", elem);
 	});
 }
 
@@ -22,7 +22,7 @@ Handler.prototype.select = function(selector, cb){
 		selector = CSSselect.parse(selector);
 	}
 	function onElem(elem){
-		if(selector(elem)) cb(elem);
+		if(elem && selector(elem)) cb(elem);
 	}
 	this.on("element", onElem);
 	return onElem;
